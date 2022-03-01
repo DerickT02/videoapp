@@ -1,0 +1,30 @@
+version: '3.7'
+
+services:
+  client:
+    image: node:16.2.0
+    container_name: client
+    build: ./client
+    ports:
+      - 3000:3000
+  backend:
+    container_name: backend
+    build: ./server
+    image: node:16
+    ports:
+      - $DOCKER_PORT:$DOCKER_PORT
+    
+    
+  db:
+    container_name: db
+    image: mysql:8.0.28
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_USERNAME=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DB}
+    hostname: database
+
+    
+
+

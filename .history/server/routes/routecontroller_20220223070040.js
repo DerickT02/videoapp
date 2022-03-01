@@ -1,0 +1,1 @@
+export { dbconnection } from '../index'

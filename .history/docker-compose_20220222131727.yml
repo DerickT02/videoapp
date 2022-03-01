@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  client:
+    container_name: client
+    build: ./client
+  server:
+    container_name: server
+  db:
+    container_name: db
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+      - MYSQL_DATABASE
+
+
+networks:
+  frontend:
+  backend:
