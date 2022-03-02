@@ -9,6 +9,6 @@ router.post('/users/register', register)
 router.post('/users/login', login)
 router.get('/users/logout', logout)
 router.get('/rooms', getRooms)
-router.post('/rooms/create', createRooms)
+router.post('/rooms', createRooms)
 
 export default router

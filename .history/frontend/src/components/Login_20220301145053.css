@@ -90,6 +90,5 @@
 }
 
 body {
-  background-image: url('../../public/background.png');
-  color: white;
+  background-image: url('../../public/background.png')
 }
