@@ -41,7 +41,7 @@
   cursor: pointer;
 }
 .form button:hover,.form button:active,.form button:focus {
-  background: rgb(25, 146, 145);
+  background: #43A047;
 }
 .form .message {
   margin: 15px 0 0;
@@ -90,6 +90,5 @@
 }
 
 body {
-  background-image: url('../../public/background.png');
-  color: white;
+  background-image: url('../../public/background.png')
 }

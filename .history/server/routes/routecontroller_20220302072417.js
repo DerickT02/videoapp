@@ -81,16 +81,3 @@ export const getRooms = async (req, res) => {
     }
 }
 
-export const createRooms = async (req, res) => {
-    const {roomName, creator} = req.body
-    if(!req.session.user){
-        res.send({message: "You are not authorized to do that"})
-    }
-    else{
-        dbconnection.query("INSERT INTO ROOM (roomName, creator) VALUES(?, ?)", [roomName, creator], (err, result) => {
-            if(err) throw err;
-            res.send("Successfully Created Room")
-        })
-    }
-}
-

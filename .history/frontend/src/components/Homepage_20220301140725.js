@@ -14,7 +14,6 @@ function Homepage(){
     return(
     <div>
     <button onClick = {(e) => {logout(e)}}>Logout</button>
-    <button>Create Room</button>
         <h1>Hello Homepage</h1>
 
     </div>
