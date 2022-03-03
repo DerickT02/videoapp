@@ -37,6 +37,13 @@ function Login(){
 
     const login = async  (e) => {
       e.preventDefault()
+
+      if(e.keyCode === 13){
+        Axios.post("http://localhost:5000/users/login", {username: username, password: password, email: email}).then((res) => {
+          console.log(res.data)
+         });
+      }
+
         await Axios.post("http://localhost:5000/users/login", {username: username, password: password, email: email}).then((res) => {
        console.log(res.data)
       });
