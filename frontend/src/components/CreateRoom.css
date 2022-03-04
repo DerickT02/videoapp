@@ -1,0 +1,25 @@
+.create-room{
+    margin-top: 15%;
+}
+
+
+
+.create-room .input input{
+    width: 70%;
+    height: 70px;
+    font-size: 20px;
+    background: rgb(75, 75, 76, 0.5);
+    border: 2px solid rgb(23, 168, 168);
+    color: white;
+
+}
+
+.create-room .button button{
+    margin-top: 10px;
+    background-color: rgb(23, 168, 168);
+    color: white;
+    border-radius: 20px;
+    border-style: none;
+    width: 30%;
+    padding: 10px 0 10px 0;
+}
