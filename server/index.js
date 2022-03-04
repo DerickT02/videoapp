@@ -6,12 +6,16 @@ import userRoutes from './routes/routes.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import { Server } from 'socket.io'
+import http from 'http'
 
 
 dotenv.config() 
 
 const app = express();
 app.use(express.json())
+
+
 
 
 app.use(cors({
@@ -23,7 +27,7 @@ app.use(cors({
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended: true}))
 
-app.use(session({
+const expressSession = session({
     key: "user",
     secret: "secret",
     resave: true,
@@ -33,7 +37,9 @@ app.use(session({
     },
     maxAge: Date.now() + (30 * 86400 * 1000)
     
-}))
+})
+
+app.use(expressSession)
 
 export const dbconnection = mysql.createConnection({
     host: 'localhost',
@@ -55,8 +61,35 @@ app.get('/', (req, res) => {
     res.send("Hello Backend")
     
 })
-
 app.use('/', userRoutes)
-app.listen(5000, ()=>{
+
+
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: 'http://localhost:7000',
+        methods: ['GET', 'POST']
+    } 
+})
+
+io.use(function(socket, next){
+    expressSession(socket.request, socket.request.res || {}, next)
+})
+
+io.on("connection", (socket) => {
+    socket.request.session
+    console.log("connected to video server")
+    socket.on('join-room', async (data) => {
+        socket.join(data)
+        console.log(`${data.user} has joined room ${data.roomName}`)
+    })
+
+    socket.on('leave-room', async (data) => {
+        socket.leave(data)
+        console.log(`${data.user} has left room ${data.roomName}`)
+    })
+})
+
+server.listen(5000, ()=>{
     console.log("connected")
 })

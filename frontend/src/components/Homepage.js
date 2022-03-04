@@ -2,9 +2,12 @@ import Axios from 'axios'
 import {useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './Homepage.css'
-function Homepage(){
-    const [rooms, setRooms] = useState([])
+import { io } from 'socket.io-client';
 
+const socket = io.connect('http://localhost:5000')
+function Homepage({currUser}){
+    const [rooms, setRooms] = useState([])
+    const currentUser = currUser
     const logout = (e) => {
         e.preventDefault();
         Axios.get('http://localhost:5000/users/logout')
@@ -21,12 +24,19 @@ function Homepage(){
         })
     }, [])
 
+    const joinRoom = (roomName) => {
+        let joinData = {user: currentUser, roomName: roomName}
+        socket.emit('join-room', joinData)
+    }
+
     console.log(rooms)
     return(
-    <div>
+    <div className = "homepage">
     <button onClick = {(e) => {logout(e)}}>Logout</button>
-    <button>Create Room</button>
-        <h1>Hello Homepage</h1>
+   <Link to = '/createroom'><button>Create Room</button></Link> 
+        <h1>Hello {currentUser}</h1>
+    <div className = "rooms-container">
+        <div className = "rooms">
         {rooms.map((room) => {
             return(
                 <div className = "room-card">
@@ -37,12 +47,13 @@ function Homepage(){
 
                     <h2>{room.creator}</h2>
                     <div className = "room-button">
-                    <Link to = {`/room/${room.roomName}`}><button>Join Room</button></Link>
+                    <Link to = {`/room/${room.roomName}`} state = {{from: room.roomName}}><button onClick = {() => {joinRoom(room.roomName)}}>Join Room</button></Link>
                     </div>
                 </div>
             )
         })}
-
+            </div>
+        </div>
     </div>
     )
 }
