@@ -8,18 +8,21 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import { Server } from 'socket.io'
 import http from 'http'
+import { ExpressPeerServer } from 'peer';
+import { SocketAddress } from 'net';
 
 
 dotenv.config() 
 
 const app = express();
+const peerServer = express();
 app.use(express.json())
 
 
 
 
 app.use(cors({
-    origin: "http://localhost:7000",
+    origin: ["http://localhost:7000", "http://localhost:8000"],
     methods: ["GET", "POST"],
     credentials: true
 }))
@@ -64,32 +67,49 @@ app.get('/', (req, res) => {
 app.use('/', userRoutes)
 
 
-const server = http.createServer(app)
-const io = new Server(server, {
+let server = http.createServer(peerServer)
+let appserver = http.createServer(app)
+
+const io = new Server(appserver, {
     cors: {
-        origin: 'http://localhost:7000',
-        methods: ['GET', 'POST']
-    } 
-})
+      origin: "http://localhost:7000",
+      methods: ["GET", "POST"],
+      credentials: true
+    }
+  })
 
-io.use(function(socket, next){
-    expressSession(socket.request, socket.request.res || {}, next)
-})
 
-io.on("connection", (socket) => {
-    socket.request.session
-    console.log("connected to video server")
-    socket.on('join-room', async (data) => {
-        socket.join(data)
-        console.log(`${data.user} has joined room ${data.roomName}`)
+
+io.on('connection', (socket) => {
+    
+  socket.on('join-room', data => {
+      console.log(`Someone has joined ${data.roomName}`)
+      socket.join(data.roomName)
+      
+  })
+ 
+    socket.on('send-id', (data) => {
+        
+        socket.join(data.room)
+        console.log(socket.rooms)
+        console.log(`${data.id} has joined ${data.room}`)
+        socket.broadcast.to(data.room).emit('receive-id', data.id)
+        
+        
     })
 
-    socket.on('leave-room', async (data) => {
-        socket.leave(data)
-        console.log(`${data.user} has left room ${data.roomName}`)
+    socket.on('disconnect', () => {
+       socket.broadcast.emit('user-disconnected')
     })
 })
 
-server.listen(5000, ()=>{
+
+appserver.listen(5000, ()=>{
     console.log("connected")
 })
+
+peerServer.use('/', ExpressPeerServer(server, {debug: true, allow_discovery: true}))
+
+server.listen(3000, () => {
+    console.log("connected to peer")
+}) 
