@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react'
 import Axios from 'axios'
 import './Login.css'
-import { useNavigate, Link } from 'react-router-dom'
 
 
 
 function Login(){
 
  
-    const navigate = useNavigate()
+    
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
