@@ -22,7 +22,7 @@ app.use(express.json())
 
 
 app.use(cors({
-    origin: ["http://localhost:7000", "http://localhost:8000"],
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
     credentials: true
 }))
@@ -72,7 +72,7 @@ let appserver = http.createServer(app)
 
 const io = new Server(appserver, {
     cors: {
-      origin: "http://localhost:7000",
+      origin: "http://localhost:3000",
       methods: ["GET", "POST"],
       credentials: true
     }
@@ -104,12 +104,12 @@ io.on('connection', (socket) => {
 })
 
 
-appserver.listen(5000, ()=>{
+appserver.listen(9000, ()=>{
     console.log("connected")
 })
 
 peerServer.use('/', ExpressPeerServer(server, {debug: true, allow_discovery: true}))
 
-server.listen(3000, () => {
+server.listen(1000, () => {
     console.log("connected to peer")
 }) 

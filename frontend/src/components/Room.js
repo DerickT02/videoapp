@@ -14,7 +14,7 @@ function Room({currUser}){
     const [remoteID, setRemoteID] = useState('')
     const { from, id } = location.state
    
-    const socket = io.connect('http://localhost:5000')
+    const socket = io.connect('http://localhost:9000')
 
     const leaveRoom = () => {
         window.location.reload()
@@ -23,7 +23,7 @@ function Room({currUser}){
 
     const peer = new Peer(undefined, {
         host: '/',
-        port: '3000'
+        port: '1000'
     })
 
   

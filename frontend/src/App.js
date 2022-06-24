@@ -18,7 +18,7 @@ function App() {
 Axios.defaults.withCredentials = true
 
 useEffect(() => {
-  Axios.get('http://localhost:5000/users/login').then((res) => {
+  Axios.get('http://localhost:9000/users/login').then((res) => {
     if(res.data.loggedIn === true){
       setData(res.data)
       setCurrentUser(res.data.data[0].username)

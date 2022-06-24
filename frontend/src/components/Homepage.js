@@ -10,14 +10,14 @@ function Homepage({currUser}){
     const navigate = useNavigate()
     const logout = (e) => {
         e.preventDefault();
-        Axios.get('http://localhost:5000/users/logout')
+        Axios.get('http://localhost:9000/users/logout')
         setTimeout(function timeout(){
             window.location.reload(1);
           }, 1000)
       
     }
 
-    const socket = io.connect('http://localhost:5000')
+    const socket = io.connect('http://localhost:9000')
 
    const joinRoom = (roomName, user) => {
        const joinData = {roomName: roomName, user: user};
@@ -29,7 +29,7 @@ function Homepage({currUser}){
    }
 
     useEffect(() => {
-        Axios.get('http://localhost:5000/rooms').then((res) => {
+        Axios.get('http://localhost:9000/rooms').then((res) => {
         setRooms(res.data)
         console.log(res.data)
         })

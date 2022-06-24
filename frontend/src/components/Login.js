@@ -16,7 +16,7 @@ function Login(){
     Axios.defaults.withCredentials = true
     Axios.defaults.crossDomain = true
     const register = async () => {
-      await Axios.post("http://localhost:5000/users/register", {username: username, password: password, email: email}).then((res) => {
+      await Axios.post("http://localhost:9000/users/register", {username: username, password: password, email: email}).then((res) => {
         console.log(res.data)
       }).catch((err) => {
         console.log(err)
@@ -38,12 +38,12 @@ function Login(){
       e.preventDefault()
 
       if(e.keyCode === 13){
-        Axios.post("http://localhost:5000/users/login", {username: username, password: password, email: email}).then((res) => {
+        Axios.post("http://localhost:9000/users/login", {username: username, password: password, email: email}).then((res) => {
           console.log(res.data)
          });
       }
 
-        await Axios.post("http://localhost:5000/users/login", {username: username, password: password, email: email}).then((res) => {
+        await Axios.post("http://localhost:9000/users/login", {username: username, password: password, email: email}).then((res) => {
        console.log(res.data)
       });
       setTimeout(function timeout(){
